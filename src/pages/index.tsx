@@ -8,6 +8,7 @@ import Heading from '@theme/Heading';
 import styles from './index.module.css';
 import { useEffect } from 'react';
 import { useLocation } from '@docusaurus/router';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -35,27 +36,33 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
 
-  const rootUrl = window.location.href.split('/').slice(0, 3).join('/');
-  console.log(rootUrl);
-
-  useEffect(() => {
-    async function callAPI() {
-      const res = await fetch(rootUrl + '/api/coveo_proxy');
-
-      const data = await res.json();
-      // console.log(data);
-    }
-    callAPI();
-  }, []);
   return (
-    <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
-    >
-      <HomepageHeader />
-      <main>
-        <HomepageFeatures />
-      </main>
-    </Layout>
+    <BrowserOnly fallback={<div>Loading...</div>}>
+      {() => {
+        const rootUrl = window.location.href.split('/').slice(0, 3).join('/');
+        console.log(rootUrl);
+
+        useEffect(() => {
+          async function callAPI() {
+            const res = await fetch(rootUrl + '/api/coveo_proxy');
+
+            const data = await res.json();
+            // console.log(data);
+          }
+          callAPI();
+        }, []);
+        return (
+          <Layout
+            title={`Hello from ${siteConfig.title}`}
+            description="Description will go into a meta tag in <head />"
+          >
+            <HomepageHeader />
+            <main>
+              <HomepageFeatures />
+            </main>
+          </Layout>
+        );
+      }}
+    </BrowserOnly>
   );
 }
