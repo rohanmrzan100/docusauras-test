@@ -18,7 +18,7 @@ export default async (req: Request, context: Context): Promise<Response> => {
       headers: header,
     });
   }
-  let tokenEnv = process.env.COVEO_API_KEY;
+  let tokenEnv = process.env.coveo_key;
 
   const token = req.headers.get('authorization');
 
@@ -26,7 +26,7 @@ export default async (req: Request, context: Context): Promise<Response> => {
     JSON.stringify({
       token,
       id: 'harnessproductionp9tivsqy',
-      tokenEnv,
+      tokenEnv: tokenEnv,
     }),
     {
       status: 200,
