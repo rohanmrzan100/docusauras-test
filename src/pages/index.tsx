@@ -6,10 +6,12 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
+import { useEffect } from 'react';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   console.log({ env: siteConfig.customFields.coveo });
+
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
@@ -32,6 +34,18 @@ function HomepageHeader() {
 
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
+
+  useEffect(() => {
+    async function callAPI() {
+      const res = await fetch(
+        'https://stately-haupia-a0c13f.netlify.app/api/coveo_proxy'
+      );
+      console.log(res);
+      const data = await res.json();
+      console.log(data);
+    }
+    callAPI();
+  }, []);
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}

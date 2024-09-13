@@ -2,6 +2,7 @@ import type { Context } from '@netlify/functions';
 
 export default async (req: Request, context: Context): Promise<Response> => {
   const header = {
+    "Access-Control-Allow-Origin": "http://localhost:3000",
     'Access-Control-Allow-Methods': 'GET,OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
