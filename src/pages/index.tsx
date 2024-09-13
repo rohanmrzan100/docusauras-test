@@ -7,10 +7,10 @@ import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
 import { useEffect } from 'react';
+import { useLocation } from '@docusaurus/router';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
-  console.log({ env: siteConfig.customFields.coveo });
 
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
@@ -35,14 +35,15 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
 
+  const rootUrl = window.location.href.split('/').slice(0, 3).join('/');
+  console.log(rootUrl);
+
   useEffect(() => {
     async function callAPI() {
-      const res = await fetch(
-        'https://stately-haupia-a0c13f.netlify.app/api/coveo_proxy'
-      );
-      console.log(res);
+      const res = await fetch(rootUrl + '/api/coveo_proxy');
+
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
     }
     callAPI();
   }, []);
