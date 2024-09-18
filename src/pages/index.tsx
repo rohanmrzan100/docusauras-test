@@ -20,6 +20,7 @@ export default function Home(): JSX.Element {
                 name="google-site-verification"
                 content="dHh5c5B9VBRFZTjNEITlh3SS4o5qjHtdMCIVbqzCknc"
               />
+              
             </Head>
             <Layout
               title={`Hello from ${siteConfig.title}`}
