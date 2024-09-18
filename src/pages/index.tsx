@@ -15,17 +15,16 @@ export default function Home(): JSX.Element {
 
         return (
           <>
-            <Head>
-              <meta
-                name="google-site-verification"
-                content="dHh5c5B9VBRFZTjNEITlh3SS4o5qjHtdMCIVbqzCknc"
-              />
-              
-            </Head>
             <Layout
               title={`Hello from ${siteConfig.title}`}
               description="Description will go into a meta tag in <head />"
             >
+              <Head>
+                <meta
+                  name="google-site-verification"
+                  content="dHh5c5B9VBRFZTjNEITlh3SS4o5qjHtdMCIVbqzCknc"
+                />
+              </Head>
               <main>
                 <HomepageFeatures />
               </main>
