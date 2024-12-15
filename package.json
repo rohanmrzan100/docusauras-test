@@ -20,6 +20,7 @@
     "@mdx-js/react": "^3.0.0",
     "@netlify/functions": "^2.8.1",
     "clsx": "^2.0.0",
+    "isnumberic": "^0.0.7",
     "prism-react-renderer": "^2.3.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
