@@ -25,18 +25,42 @@ jobs:
 
       - name: Check filenames for kebab case
         run: |
-         # Find all .md files excluding node_modules, README.md, and CONTRIBUTING.md, and check filenames for kebab case
-          invalid_files=$(find . -type f -name '*.md' \
-            -not -path "./node_modules/*" \
-            -not -name "README.md" \
-            -not -name "CONTRIBUTING.md" \
-            -exec basename {} \; | grep -vE '^[a-z0-9]+(-[a-z0-9]+)*\.md$')
-          
-          if [ -n "$invalid_files" ]; then
-              echo "The following Markdown filenames are not in kebab case:"
-              echo "$invalid_files"
-            
-          else
-              echo "All Markdown filenames are in kebab case."
+          # Find all .md files excluding node_modules, README.md, and CONTRIBUTING.md, and check filenames for kebab case
+           invalid_files=$(find . -type f -name '*.md' \
+             -not -path "./node_modules/*" \
+             -not -name "README.md" \
+             -not -name "CONTRIBUTING.md" \
+             -exec basename {} \; | grep -vE '^[a-z0-9]+(-[a-z0-9]+)*\.md$')
+           
+           if [ -n "$invalid_files" ]; then
+               echo "The following Markdown filenames are not in kebab case:"
+               echo "$invalid_files"
+             
+           else
+               echo "All Markdown filenames are in kebab case."
+           fi
+
+      - name: Get list of changed image files
+        id: changed-images
+        run: |
+          # Get the list of added or modified image files in the PR
+          git diff --name-only --diff-filter=AM origin/main | grep '\.\(png\|jpg\svg\|jpeg\|gif\)$' > changed_images.txt || true
+          if [ ! -s changed_images.txt ]; then
+            echo "No image files to check."
+            exit 0
           fi
 
+      - name: Check image filenames for kebab case
+        run: |
+          # Find all image files excluding node_modules and check filenames for kebab case
+           invalid_images=$(find . -type f -name '*.{png,jpg,jpeg,gif}' \
+             -not -path "./node_modules/*" \
+             -exec basename {} \; | grep -vE '^[a-z0-9]+(-[a-z0-9]+)*\.(png|jpg|jpeg|gif)$')
+           
+           if [ -n "$invalid_images" ]; then
+               echo "The following image filenames are not in kebab case:"
+               echo "$invalid_images"
+           
+           else
+               echo "All image filenames are in kebab case."
+           fi
