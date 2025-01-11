@@ -33,12 +33,12 @@ jobs:
           fi
           x=1
           echo -e "${Blue} Changed Markdown files are :.${Reset}"
-          echo "$changed_files" | while read -r file; do
+           echo "$changed_files" | while read -r file; do
               dir=$(dirname "$file")
               base=$(basename "$file")
               parent_folder=$(basename "$dir")
-              if [ "$dir" = "." ]; then
-                  parent_folder="(root)"
+              if [ "$parent_folder" = "." ]; then
+                  parent_folder="root"
               fi
               echo -e "${Yellow} $x. File: $base, Folder: $parent_folder${Reset}"
               x=$((x + 1))
