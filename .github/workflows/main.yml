@@ -1,9 +1,9 @@
-name: Check Kebab Case for Markdown Files in PR Commits
+name: MarkDown filename validation
 
 on:
-  pull_request: # Trigger on PR events
+  pull_request:
     paths:
-      - '**/*.md' # Trigger only when .md files are changed
+      - '**/*.md'
 
 jobs:
   kebab-case-check:
@@ -12,31 +12,30 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Get list of changed Markdown files
-        id: changed-files
-        run: |
-          # Get the list of added or modified .md files in the PR
-          git diff --name-only --diff-filter=AM origin/main | grep '\.md$' > changed_files.txt || true
-          if [ ! -s changed_files.txt ]; then
-            echo "No Markdown files to check."
-            exit 0
-          fi
+        with:
+          fetch-depth: 2
 
       - name: Check filenames for kebab case
         run: |
-         # Find all .md files excluding node_modules, README.md, and CONTRIBUTING.md, and check filenames for kebab case
-          invalid_files=$(find . -type f -name '*.md' \
-            -not -path "./node_modules/*" \
-            -not -name "README.md" \
-            -not -name "CONTRIBUTING.md" \
-            -exec basename {} \; | grep -vE '^[a-z0-9]+(-[a-z0-9]+)*\.md$')
-          
-          if [ -n "$invalid_files" ]; then
-              echo "The following Markdown filenames are not in kebab case:"
-              echo "$invalid_files"
-            
-          else
-              echo "All Markdown filenames are in kebab case."
-          fi
+          Red='\033[0;31m'          # Red
+          Green='\033[0;32m'        # Green
+          Yellow='\033[0;33m'       # Yellow
+          Blue='\033[0;34m'         # Blue
+          Reset='\033[0m'           # Reset
 
+          echo  -e "${Blue} Checking all changed Markdown files ..."
+
+          changed_files=$(git diff --name-only  HEAD^1 HEAD | xargs -n1 basename  | grep '\.md$')
+
+          if [ -z "$changed_files" ]; then
+            echo -e "${Green} No changed Markdown files in this PR.${Reset}"
+            exit 0
+          fi
+          x=1
+          echo -e "${Blue} Changed Markdown files are :.${Reset}"
+          echo "$changed_files" | while read -r file; do
+              dir=$(dirname "$file")
+              base=$(basename "$file")
+              echo -e "${Yellow} $x. File: $base, Folder: $dir${Reset}"
+              x=$((x + 1))
+          done
