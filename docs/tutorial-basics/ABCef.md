@@ -55,3 +55,7 @@ export default {
   ],
 };
 ```
+
+git add .
+git commit -m "static-file-name-checker"
+git push

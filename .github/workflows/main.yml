@@ -36,6 +36,10 @@ jobs:
           echo "$changed_files" | while read -r file; do
               dir=$(dirname "$file")
               base=$(basename "$file")
-              echo -e "${Yellow} $x. File: $base, Folder: $dir${Reset}"
+              parent_folder=$(basename "$dir")
+              if [ "$dir" = "." ]; then
+                  parent_folder="(root)"
+              fi
+              echo -e "${Yellow} $x. File: $base, Folder: $parent_folder${Reset}"
               x=$((x + 1))
           done
