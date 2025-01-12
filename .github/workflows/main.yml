@@ -23,17 +23,18 @@ jobs:
           Blue='\033[0;34m'         # Blue
           Reset='\033[0m'           # Reset
 
-          echo  -e "${Blue} Checking all changed Markdown files ..."
+          echo -e "${Blue} Checking all changed Markdown files ..."
 
-          changed_files=$(git diff --name-only  HEAD^1 HEAD | xargs -n1 basename  | grep '\.md$')
+          changed_files=$(git diff --name-only HEAD^1 HEAD | grep '\.md$')
 
           if [ -z "$changed_files" ]; then
             echo -e "${Green} No changed Markdown files in this PR.${Reset}"
             exit 0
           fi
+
           x=1
-          echo -e "${Blue} Changed Markdown files are :.${Reset}"
-           echo "$changed_files" | while read -r file; do
+          echo -e "${Blue} Changed Markdown files are :${Reset}"
+          echo "$changed_files" | while read -r file; do
               dir=$(dirname "$file")
               base=$(basename "$file")
               parent_folder=$(basename "$dir")
