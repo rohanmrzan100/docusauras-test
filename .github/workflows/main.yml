@@ -4,6 +4,10 @@ on:
   pull_request:
     paths:
       - '**/*.md'
+      - '**/*.jpg'
+      - '**/*.png'
+      - '**/*.jpeg'
+      - '**/*.svg'
 
 jobs:
   kebab-case-check:
@@ -25,15 +29,15 @@ jobs:
 
           echo -e "${Blue} Checking all changed Markdown files ..."
 
-          changed_files=$(git diff --name-only HEAD^1 HEAD | grep '\.md$')
+          changed_files=$(git diff --name-only HEAD^1 HEAD | grep -E '\.(md|jpg|png|jpeg|svg)$')
 
           if [ -z "$changed_files" ]; then
-            echo -e "${Green} No changed Markdown files in this PR.${Reset}"
+            echo -e "${Green} No changed files in this PR.${Reset}"
             exit 0
           fi
 
           x=1
-          echo -e "${Blue} Changed Markdown files are :${Reset}"
+          echo -e "${Blue} Changed static files are :${Reset}"
           echo "$changed_files" | while read -r file; do
               dir=$(dirname "$file")
               base=$(basename "$file")
