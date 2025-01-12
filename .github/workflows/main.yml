@@ -41,6 +41,7 @@ jobs:
               if [ "$parent_folder" = "." ]; then
                   parent_folder="root"
               fi
-              echo -e "${Yellow} $x. File: $base, Folder: $parent_folder${Reset}"
+              combined_info="$parent_folder/$base"  # Treat folder name as part of the file name
+              echo -e "${Yellow} $x. $combined_info${Reset}"
               x=$((x + 1))
           done
