@@ -49,3 +49,22 @@ jobs:
               echo -e "${Yellow} $x. $combined_info${Reset}"
               x=$((x + 1))
           done
+
+          # Find invalid filenames
+          invalid_kebab_case=$(echo "$changed_files" | grep -vE '^[a-z0-9]+(-[a-z0-9]+)*\.(md|jpg|png|jpeg|svg)$' || true)
+          # Find long filenames
+          long_files=$(echo "$changed_files" | awk 'length > 100')
+          failure_flag=0
+
+          # Check for  filenames that are not in kebab case
+          if [ -n "$invalid_kebab_case" ]; then
+            echo -e "${Blue} The following filenames are not in kebab case:${Reset}"
+            x=1
+            echo "$invalid_kebab_case" | while read -r file; do
+              echo -e "${Red}$x. $file${Reset}"
+              x=$((x + 1))
+            done
+            failure_flag=1
+          else
+            echo -e "${Green} All changed filenames are  in kebab case."
+          fi
