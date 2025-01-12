@@ -51,7 +51,7 @@ jobs:
           done
 
           # Find invalid filenames
-          invalid_kebab_case=$(echo "$changed_files" | grep -vE '^([a-z0-9]+(-[a-z0-9]+)*)(/([a-z0-9]+(-[a-z0-9]+)*))*\.(md|jpg|png|jpeg|svg)$' || true))
+          invalid_kebab_case=$(echo "$changed_files" | grep -vE '^([a-z0-9]+(-[a-z0-9]+)*)(/([a-z0-9]+(-[a-z0-9]+)*))*\.(md|jpg|png|jpeg|svg)$' || true)
           # Find long filenames
           long_files=$(echo "$changed_files" | awk 'length > 100')
           failure_flag=0
