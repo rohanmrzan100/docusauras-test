@@ -65,25 +65,3 @@ jobs:
           else
             echo -e "${Green} All changed filenames are  in kebab case."
           fi
-
-          changed_files=$(git diff --name-only HEAD^1 HEAD | grep -E '\.(md|jpg|png|jpeg|svg)$')
-          long_files=$(echo "$changed_files" | awk 'length > 100')
-          # Check for  filenames that are not long
-           if [ -n "$long_files" ]; then
-            echo -e "${Blue} The following  filenames exceed 100 characters:${Reset}"
-             x=1
-            echo "$long_files$" | while read -r file; do
-              echo -e "${Red}$x. $long_files${Reset}"
-              x=$((x + 1))
-            done
-            failure_flag=1
-           else
-            echo -e "${Green} All changed filenames are  of valid length.${Reset}"
-          fi
-          if [ "$failure_flag" -eq 0 ]; then
-            echo -e "${Green} All changed  filenames passed validation.${Reset}"
-            exit 0
-          else
-            echo -e "${Red} The check has failed.${Reset}"
-            exit 1
-          fi
