@@ -11,14 +11,8 @@ export default async (req: Request, context: Context): Promise<Response> => {
   } = {
     'Access-Control-Allow-Methods': 'GET,OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Origin': '*',
   };
-  if (allowedOrigins.includes(req.headers.get('origin'))) {
-    header = {
-      'Access-Control-Allow-Origin': req.headers.get('origin'),
-      'Access-Control-Allow-Methods': 'GET,OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    };
-  }
 
   if (req.method === 'OPTIONS') {
     return new Response('ok', {
@@ -35,7 +29,7 @@ export default async (req: Request, context: Context): Promise<Response> => {
   }
 
   const postData = {
-    validFor: 15*60*1000, //valid for 12 hrs
+    validFor: 15 * 60 * 1000, //valid for 12 hrs
     userIds: [
       {
         name: 'guest',
