@@ -1,0 +1,17 @@
+name: Validate PR Description
+
+on:
+  pull_request:
+
+jobs:
+  check-description:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if PR description is missing or default
+        run: |
+          DESCRIPTION="$(jq -r .pull_request.body "$GITHUB_EVENT_PATH")"
+          echo "PR Description: $DESCRIPTION"
+          if [[ -z "$DESCRIPTION" || "$DESCRIPTION" == *"Please describe your changes:"* ]]; then
+            echo "❌ PR description is missing or default. Please fill it in."
+            exit 1
+          fi
