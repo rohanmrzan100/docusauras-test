@@ -1,0 +1,25 @@
+name: Block Merge on Label
+
+on:
+  pull_request:
+    types: [labeled, unlabeled, synchronize, opened, reopened]
+
+jobs:
+  check-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Check for forbidden label
+        run: |
+          FORBIDDEN_LABEL="Do Not Merge"
+          LABELS=$(jq -r '.pull_request.labels[].name' "$GITHUB_EVENT_PATH")
+
+          echo "Labels: $LABELS"
+          for label in $LABELS; do
+            if [[ "$label" == "$FORBIDDEN_LABEL" ]]; then
+              echo "::error ::This PR has the forbidden label '$FORBIDDEN_LABEL'. Remove it before merging."
+              exit 1
+            fi
+          done
