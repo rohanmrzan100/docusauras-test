@@ -13,13 +13,16 @@ jobs:
 
       - name: Check for forbidden label
         run: |
-          FORBIDDEN_LABEL="Do Not Merge"
-          LABELS=$(jq -r '.pull_request.labels[].name' "$GITHUB_EVENT_PATH")
+              FORBIDDEN_LABEL="Do Not Merge"
+              LABELS=$(jq -r '.pull_request.labels[].name' "$GITHUB_EVENT_PATH")
 
-          echo "Labels: $LABELS"
-          for label in $LABELS; do
-            if [[ "$label" == "$FORBIDDEN_LABEL" ]]; then
-              echo "::error ::This PR has the forbidden label '$FORBIDDEN_LABEL'. Remove it before merging."
-              exit 1
-            fi
-          done
+              echo "Labels:"
+              echo "$LABELS"
+
+              while IFS= read -r label; do
+                if [[ "$label" == "$FORBIDDEN_LABEL" ]]; then
+                  echo "::error ::This PR has the forbidden label '$FORBIDDEN_LABEL'. Remove it before merging."
+                  exit 1
+                fi
+              done <<< "$LABELS"
+
