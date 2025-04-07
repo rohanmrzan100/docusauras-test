@@ -2,16 +2,23 @@ name: Validate PR Description
 
 on:
   pull_request:
+    types: [opened, edited, reopened, synchronize]
 
 jobs:
   check-description:
     runs-on: ubuntu-latest
     steps:
-      - name: Fail if PR description is missing or default
+      - name: Validate PR description
         run: |
           DESCRIPTION="$(jq -r .pull_request.body "$GITHUB_EVENT_PATH")"
           echo "PR Description: $DESCRIPTION"
-          if [[ -z "$DESCRIPTION" || "$DESCRIPTION" == *"Please describe your changes:"* ]]; then
-            echo "❌ PR description is missing or default. Please fill it in."
+
+          # Extract line after "* Please describe your changes:"
+          DESC_LINE=$(echo "$DESCRIPTION" | grep -A1 '\* Please describe your changes:' | tail -n1 | xargs)
+
+          echo "Parsed description: '$DESC_LINE'"
+
+          if [[ -z "$DESC_LINE" || "$DESC_LINE" == "Please describe your changes:" ]]; then
+            echo "PR description is missing. Please fill it in."
             exit 1
           fi
