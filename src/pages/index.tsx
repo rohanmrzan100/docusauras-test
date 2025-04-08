@@ -13,6 +13,8 @@ export default function Home(): JSX.Element {
       {() => {
         const rootUrl = window.location.href.split('/').slice(0, 3).join('/');
 
+
+        
         return (
           <>
             <Layout
