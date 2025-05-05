@@ -1,7 +1,11 @@
 import type { Context } from '@netlify/functions';
 
 export default async (req: Request, context: Context): Promise<Response> => {
-  const allowedOrigins = ['https://www.harness.io', 'https://dev-site-fe63e9.webflow.io'];
+  const allowedOrigins = [
+    'https://www.harness.io',
+    'https://dev-site-fe63e9.webflow.io',
+    'http://localhost:5500',
+  ];
 
   let header: {
     [key: string]: string;
@@ -49,7 +53,7 @@ export default async (req: Request, context: Context): Promise<Response> => {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         // Authorization: 'Bearer ' + process.env.COVEO_API_KEY,
-        Authorization: 'Bearer xx13de1f61-633c-400f-ac4f-86aff30ffa5c' ,
+        Authorization: 'Bearer xx13de1f61-633c-400f-ac4f-86aff30ffa5c',
       },
       body: JSON.stringify(postData),
     });
