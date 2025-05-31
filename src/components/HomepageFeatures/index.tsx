@@ -18,6 +18,7 @@ const FeatureList: FeatureItem[] = [
         docs into the <code>docs</code> directory.
       </>
     ),
+    
   },
   {
     title: 'Powered by React',
