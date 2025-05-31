@@ -45,7 +45,7 @@ jobs:
         with:
           urls: |
             http://localhost:3000
-            http://localhost:3000/docs
+            http://localhost:3000/docs/intro
           configPath: ./.github/workflows/lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
