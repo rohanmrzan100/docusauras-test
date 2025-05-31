@@ -45,7 +45,7 @@ jobs:
         with:
           urls: |
             http://localhost:3000
-            http://localhost:3000/docs/intro
+       
           configPath: ./.github/workflows/lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
@@ -64,9 +64,13 @@ jobs:
 
       - name: Add Lighthouse stats as comment
         id: comment_to_pr
-        uses: marocchino/sticky-pull-request-comment@67d0dec7b07ed060a405f9b2a64b8ab319fdd7db # 2.9.2
         with:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}
-          number: ${{ github.event.pull_request.number }}
-          header: lighthouse
-          message: ${{ steps.format_lighthouse_score.outputs.comment }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: ${{ steps.format_lighthouse_score.outputs.comment }}
+            })
+       
