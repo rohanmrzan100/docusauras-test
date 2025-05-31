@@ -64,6 +64,7 @@ jobs:
 
       - name: Add Lighthouse stats as comment
         id: comment_to_pr
+        uses: actions/github-script@v
         with:
           GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}
           script: |
